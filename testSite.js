@@ -9,7 +9,7 @@ async function testSite(website) {
 
     const pageTitle = await page.title();
 
-    console.log('Page Title:', pageTitle);
+    console.log(`Page Title: ${pageTitle}`);
 
     await browser.close();
 };
