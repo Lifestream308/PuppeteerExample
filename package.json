@@ -11,5 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "puppeteer": "^21.3.8"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }
