@@ -11,8 +11,8 @@ async function scrapeEdenJellyFish() {
 
     // xpath
     const [productNamePath] = await page.$x('//*[@id="root"]/div/div[1]/div/div/div/div/div/div/div[2]/div/div[2]/div[1]/div[1]/div/text()');
-    const text = await productNamePath?.getProperty('textContent')
-    const rawText = await text?.jsonValue()
+    const productTextContent = await productNamePath?.getProperty('textContent')
+    const productName = await productTextContent?.jsonValue()
     // this worked as of 11/10/2023 but it sometimes doesn't work? Just note that it seems to not always work
     
     // const [pricePath] = await page.$x('');
@@ -20,25 +20,29 @@ async function scrapeEdenJellyFish() {
     // const priceContent = await pricePath.innerHTML()
     // const rawPrice = await priceContent.jsonValue()
 
-    const cellText = await page.$eval('table tbody tr:nth-child(1) td:nth-child(4)', (cell) => {
+    // before table is accessible, need to click the dropdown
+    const dropDownElement = await page.$$('[class="title"]');
+    if (dropDownElement) {
+      await dropDownElement[0].click();
+      // console.log(dropDownElement);
+    } else {
+      console.error('Element not found');
+    }
+
+    const priceCellText = await page.$eval('table tbody tr:nth-child(1) td:nth-child(4)', (cell) => {
       return cell.textContent.trim();
     });
-    // this worked as of 11/10/2023
 
     const seller = await page.$eval('table tbody tr:nth-child(1) td:nth-child(2)', (cell) => {
       return cell.textContent.trim();
     });
-    // this worked as of 11/10/2023
 
     const dateSold = await page.$eval('table tbody tr:nth-child(1) td:nth-child(1)', (cell) => {
       return cell.textContent.trim();
     });
-    // this worked as of 11/10/2023
 
     console.log('Eden Page Title:', pageTitle);
-    // console.log('Item Text:', rawText);
-    // console.log('Price:', cellText);
-    console.log(`Item: ${rawText} Price: ${cellText} Seller: ${seller} Date: ${dateSold}`);
+    console.log(`Item: ${productName} Price: ${priceCellText} Seller: ${seller} Date: ${dateSold}`);
 
     await browser.close();
 };

@@ -1,4 +1,4 @@
-const testSite = require('../testSite')
+const testSite = require('../scrapeFunctions/testSite')
 
 test('testSite should log the page title of the entered website', async () => {
     const consoleSpy = jest.spyOn(console, 'log');

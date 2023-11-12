@@ -1,6 +1,6 @@
-const scrapeTarget = require('./targetTitle');
-const scrapeEdenJellyFish = require('./edenJelly');
-const testSite = require('./testSite')
+const scrapeTarget = require('./scrapeFunctions/targetTitle');
+const scrapeEdenJellyFish = require('./scrapeFunctions/edenJelly');
+const testSite = require('./scrapeFunctions/testSite')
 
 // scrapeTarget()
 scrapeEdenJellyFish()
