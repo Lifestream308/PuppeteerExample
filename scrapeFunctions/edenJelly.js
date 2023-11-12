@@ -21,10 +21,13 @@ async function scrapeEdenJellyFish() {
     // const rawPrice = await priceContent.jsonValue()
 
     // before table is accessible, need to click the dropdown
+    await page.waitForSelector('.title');
+
     const dropDownElement = await page.$$('[class="title"]');
     if (dropDownElement) {
       await dropDownElement[0].click();
-      // console.log(dropDownElement);
+      const firstElementText = await page.evaluate(el => el.textContent, dropDownElement[0]);
+      console.log(firstElementText);
     } else {
       console.error('Element not found');
     }
