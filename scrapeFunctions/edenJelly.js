@@ -20,7 +20,7 @@ async function scrapeEdenJellyFish() {
     // const priceContent = await pricePath.innerHTML()
     // const rawPrice = await priceContent.jsonValue()
 
-    // before table is accessible, need to click the dropdown
+    // before table is accessible, need to click the dropdown. Maybe don't need to click? just need to use waitForSelector with the table element?
     await page.waitForSelector('.title');
 
     const dropDownElement = await page.$$('[class="title"]');
