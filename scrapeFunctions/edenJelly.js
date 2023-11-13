@@ -1,5 +1,13 @@
 const puppeteer = require('puppeteer');
 
+const { Pool } = require('pg')
+
+const connectionESQL = "postgres://boxbfjeb:CJiYOTkbJKFZtA-9VtXGERzDYBqvr_uv@bubble.db.elephantsql.com/boxbfjeb"
+
+const pool = new Pool({
+    connectionString: connectionESQL,
+  });
+
 async function scrapeEdenJellyFish() {
     const browser = await puppeteer.launch({
     headless: "new", // Set to true for headless mode, false for a visible browser
@@ -32,6 +40,8 @@ async function scrapeEdenJellyFish() {
       console.error('Element not found');
     }
 
+    await page.waitForSelector('table.ui.table');
+
     const priceCellText = await page.$eval('table tbody tr:nth-child(1) td:nth-child(4)', (cell) => {
       return cell.textContent.trim();
     });
@@ -45,9 +55,23 @@ async function scrapeEdenJellyFish() {
     });
 
     console.log('Eden Page Title:', pageTitle);
-    console.log(`Item: ${productName} Price: ${priceCellText} Seller: ${seller} Date: ${dateSold}`);
+    // console.log(`Item: ${productName} Price: ${priceCellText} Seller: ${seller} Date: ${dateSold}`);
+    console.log(productName, priceCellText, seller, dateSold)
 
     await browser.close();
+    
+    // add date into ElephantSQL database
+    pool.query(`
+    INSERT INTO users (username, email)
+    VALUES
+      ('${seller}', '${dateSold}')
+  `, (err, result) => {
+    if (err) {
+      console.error('Error entering data to users table', err);
+    } else {
+      console.log('Data inserted successfully');
+    }
+  });
 };
 
 module.exports = scrapeEdenJellyFish
