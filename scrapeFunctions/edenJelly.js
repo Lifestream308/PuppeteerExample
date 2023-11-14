@@ -1,8 +1,10 @@
+const dotenv = require('dotenv').config(); 
+
 const puppeteer = require('puppeteer');
 
 const { Pool } = require('pg')
 
-const connectionESQL = "postgres://boxbfjeb:CJiYOTkbJKFZtA-9VtXGERzDYBqvr_uv@bubble.db.elephantsql.com/boxbfjeb"
+const connectionESQL = process.env.DB_API_KEY
 
 const pool = new Pool({
     connectionString: connectionESQL,
