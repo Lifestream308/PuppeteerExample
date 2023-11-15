@@ -20,6 +20,7 @@ async function scrapeEdenJellyFish() {
     const pageTitle = await page.title();
 
     // xpath
+    await page.waitForSelector('.gm_item-name');
     const [productNamePath] = await page.$x('//*[@id="root"]/div/div[1]/div/div/div/div/div/div/div[2]/div/div[2]/div[1]/div[1]/div/text()');
     const productTextContent = await productNamePath?.getProperty('textContent')
     const productName = await productTextContent?.jsonValue()
